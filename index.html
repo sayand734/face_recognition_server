@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Upload</title>
+</head>
+<body>
+  <h1>Image Upload</h1>
+  <form action="/" method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*" />
+    <button type="submit">Upload</button>
+  </form>
+  <div id="imageContainer"></div>
+  <script>
+    const imageContainer = document.getElementById('imageContainer');
+
+
+    document.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault(); 
+      const formData = new FormData();
+      formData.append('image', document.querySelector('input[type="file"]').files[0]);
+      fetch('/', {
+        method: 'POST',
+        body: formData
+      }).then(response => response.text()).then(data => {
+        const imageElement = document.createElement('img');
+          imageElement.src = 'data:image/jpeg;base64,' + data;
+          imageContainer.appendChild(imageElement); 
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  
+</script>
+</body>
+</html>
